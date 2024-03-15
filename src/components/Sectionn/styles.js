@@ -4,7 +4,7 @@ import theme from "../../styles/theme";
 
 export const Container = styled.section`
 
-    margin:  56px 0 28px;
+    margin: 28px 0;
 
 
     > h2{
@@ -14,7 +14,7 @@ export const Container = styled.section`
 
 
         padding-bottom: 16px;
-        margin-bottom: 24px;
+        margin-bottom: 28px;
 
 
         color: ${theme.COLORS.GRAY_100};
