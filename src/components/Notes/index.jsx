@@ -5,19 +5,17 @@ import { Tag } from '../tags'
 
 export function Note({ data,...rest}){
 return(
-    <Container>
+    <Container {...rest}>
         <h1>{data.title}</h1>
         
         {
-            data.tags &&
+            data.tags && 
             <footer>
                 {
-                    data.tags.map(tag => <Tag title={tag.name}  key={tag.name}/>
-                    )
+                    data.tags.map(tag => <Tag  key={tag.id} title={tag.name}/>)
                 }
             </footer>
         }
-
         
     </Container>
 )

@@ -40,10 +40,11 @@ export function Home(){
             <Section title="Minhas notas">  
                 <Note data={{
                     title: 'React',
-                    tag: [
-                        {id: '1' , name: 'react'},
-                        {id : '2' , name: 'node.js'}
+                    tags:[
+                        {id:"1" , name:"react"},
+                        {id:"2" , name:"node.js"}
                     ]
+                   
                 }}/>
 
             </Section>
