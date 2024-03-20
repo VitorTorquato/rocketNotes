@@ -5,7 +5,7 @@ import GlobalStyles from './styles/global';
 
 import theme from './styles/theme'
 
-import { LogIn }  from './pages/Login'
+import { New }  from './pages/New'
  
 
 
@@ -13,7 +13,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <GlobalStyles />
-      <LogIn />
+      <New />
     </ThemeProvider>
   </React.StrictMode>,
 )
