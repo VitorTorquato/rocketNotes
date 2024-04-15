@@ -10,7 +10,7 @@ export function AuthRoutes(){
         <Routes>
             <Route path='/' element={<LogIn/>} />
             <Route path='/register' element={<SignUp/>} />
-             />
+             
         </Routes>
     )
 
