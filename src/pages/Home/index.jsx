@@ -1,4 +1,8 @@
+import { useState , useEffect } from "react";
+
 import { Container, Brand, Menu, Search, Content , NewNote } from "./styles";
+
+import { api } from "../../Services/api";
 
 import { FiPlus, FiSearch} from 'react-icons/fi'
 import { Header } from '../../components/header';
@@ -9,6 +13,36 @@ import { Input } from "../../components/Input";
 
 export function Home(){
 
+    const [tags, setTags] = useState([]);
+    const [tagsSelected, setTagsSelected] = useState([]);
+
+
+    function handleTagsSelected(tagName){
+
+        const alredySelected = tagsSelected.includes(tagName);
+
+        if(alredySelected){
+            const filterTags = tagsSelected.filter(tag => tag !== tagName);
+            setTagsSelected(filterTags)
+        }else{
+            setTagsSelected(prevState => [...prevState,tagName])
+        }
+
+
+   
+    }
+
+    
+    useEffect(() => {
+        async function fetchTags(){
+            const response = await api.get("/tags");
+            setTags(response.data)
+        }
+
+        fetchTags();
+
+    } , [])
+
     return(
         <Container>
             <Brand>
@@ -18,17 +52,31 @@ export function Home(){
             <Header/>
 
         <Menu>
-          
-                <li>
-                    <ButtonText title="Todos" isActive />
+                 <li>
+                    <ButtonText 
+                    title="Todos" 
+                    onClick={() => handleTagsSelected("all")}
+                    isActive={tagsSelected.length === 0}
+                    />
                 </li>
-                <li>
-                    <ButtonText title="React"/>
+            {
+            
+            tags && tags.map( tag => (
+
+                <li
+                    key={String(tag.id)}
+                >
+                    <ButtonText 
+                    title={tag.name}
+                    onClick={() => handleTagsSelected(tag.name)}
+                    isActive={tagsSelected.includes(tag.name)} 
+                     />
                 </li>
-                <li>
-                    <ButtonText title="Node"/>
-                </li>
-           
+
+            ))
+                
+                
+            }
         </Menu>
 
         <Search>
