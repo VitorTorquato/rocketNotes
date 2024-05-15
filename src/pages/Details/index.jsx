@@ -1,4 +1,9 @@
+import { useState, useEffect } from 'react';
 import {Container , Links , Content} from './styles';
+
+import { useParams, useNavigate } from 'react-router-dom';
+
+import { api } from '../../Services/api';
 
 import { Header } from '../../components/header';
 import { Button } from '../../components/button';
@@ -9,44 +14,110 @@ import { ButtonText } from '../../components/ButtonText';
 
 
 export function Details(){
-  
 
+  const [data,setData] = useState();
+
+  
+  const params = useParams();
+  const navigate = useNavigate();
+
+  function handleBack(){
+      navigate('/');
+  }
+
+
+async  function handleRemoveNote(){
+    const confirm = window.confirm("Deseja realmente remover essa nota");
+
+    if(confirm){
+      await api.delete(`/notes/${params.id}`);
+      navigate('/')
+
+    }
+
+
+  }
+
+
+  useEffect(() => { 
+    async function fetchNote(){
+
+      const response = await api.get(`/notes/${params.id}`);
+      setData(response.data);
+
+
+    }
+
+    fetchNote();
+
+  } , [])
   return(
     <Container>
       <Header/>
+
+      {
+
+        data &&
       <main>
         <Content>
      
-      <ButtonText title="Excluir nota" />
+      <ButtonText 
+      title="Excluir nota"
+      onClick={handleRemoveNote}
+      />
 
       <h1>
-        Intordução ao React
+        {data.title}
       </h1>
 
       <p>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officiis fugiat temporibus quasi neque facilis quae aspernatur quisquam sapiente ratione, magnam vitae assumenda reprehenderit repellat quo vero quibusdam quis tempore quam.
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officiis fugiat temporibus quasi neque facilis quae aspernatur quisquam sapiente ratione, magnam vitae assumenda vitae.
+        {data.description}
       </p>
+      
+      {
 
+        data.links &&
       <Section title="Links úteis">
         <Links>
-          <li>
-            <a href="h#">https://vitortorquato/vercel.app</a>
+        {
+
+          data.links.map(link => (
+          <li
+           key={String(link.id)}>
+            
+            <a href={link.url} target='_blank'>
+              {link.url}
+            </a>
           </li>
-          <li>
-            <a href="h#">https://vitortorquato/vercel.app</a>
-          </li> 
+          ))
+          }
         </Links>
       </Section>
+      
+      }
 
+
+        {      
+
+          data.tags &&
           <Section title="Marcadores">
-            <Tag title="Express"/>
-           <Tag title="Node.js"/>
-          </Section>
+            {
+              data.tags.map(tag => (  
 
-        <Button title="voltar"/>
+            <Tag 
+            key={tag.id}
+            title={tag.name}/>
+          ))
+            }
+          </Section>
+         }
+        <Button 
+        title="voltar"
+        onClick={handleBack}
+        />
        </Content>
       </main>
+      }
     </Container>
   )
-}
+}[]
